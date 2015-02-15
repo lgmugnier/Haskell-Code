@@ -1,0 +1,38 @@
+----------------------------------------------------------------
+-- Computer Science 320 (Fall, 2012)
+-- Concepts of Programming Languages
+--
+-- Assignment 7
+--   tests3.mhs
+
+----------------------------------------------------------------
+-- Test Code for the mini-Haskell Interpreter
+
+----------------------------------------------------------------
+-- Assignment 7, Problem 3, Part B
+
+-- We can simply place a diverging expressing in a context
+-- which should never be evaluated. Here, we place the Y
+-- combinator applied to the identity function, a diverging
+-- value, into five such contexts -- as the argument to a unit
+-- lambda abstraction, as an argument to a function which
+-- never uses its variable, as a definition for a let-bound
+-- variable which is never used, and as an argument to
+-- short-circuited (||) and (&&) operators.
+
+-- This should evaluate to "False" under call-by-name
+-- evaluation rules, and should diverge under call-by-value
+-- evaluation rules.
+
+let y = \f -> (\x -> f (x x)) (\x -> f (x x));
+    id = \x -> x;
+    inf = y id
+in
+   let x = inf
+   in
+      (\() -> (\x -> (\y -> 
+         (&&) ((&&) False y) ((||) True y)) inf) inf) inf
+
+
+
+   
